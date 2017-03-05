@@ -1,14 +1,37 @@
-package com.example.lymanshen.emergencyshelter;
+package com.example.tristen.hackathonapp;
+//package com.example.lymanshen.emergencyshelter;
+        import android.Manifest;
+        import android.content.Context;
+        import android.content.pm.PackageManager;
+        import android.location.Address;
+        import android.location.Geocoder;
+        import android.location.Location;
+        import android.location.LocationListener;
+        import android.location.LocationManager;
+        import android.os.Build;
+        import android.os.Bundle;
+        import android.support.annotation.NonNull;
+        import android.support.v4.content.ContextCompat;
+        import android.support.v7.app.AppCompatActivity;
+        import android.util.Log;
+        import android.view.View;
+        import android.widget.EditText;
+        import android.widget.TextView;
+        import android.widget.Button;
+        import android.widget.Toast;
 
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.widget.EditText;
-import android.widget.TextView;
+        import java.io.IOException;
+        import java.util.List;
+        import java.util.Locale;
+import java.lang.String;
+import android.location.Location;
+import java.lang.Object;
+
 
 public class MainActivity extends AppCompatActivity {
 
 
-   // @Override
+    // @Override
     public Shelter shlist[];
     public EditText tbox1;
     public EditText tbox2;
@@ -17,10 +40,64 @@ public class MainActivity extends AppCompatActivity {
     public TextView  dist;
     public TextView phone;
     public TextView rating;
+    public Button but;
+    LocationListener locationListener = new LocationListener() {
+        public void onLocationChanged(Location location) {
+            // Called when a new location is found by the network location provider.
+            location.getLatitude();
+            location.getLongitude();
+            Log.d(MainActivity.class.getSimpleName(), Double.toString(location.getLatitude()) );
+            tbox1.setText(Double.toString(location.getLatitude()));
+            tbox2.setText(Double.toString(location.getLongitude()));
+            doThing();
 
+
+        }
+
+        public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+        public void onProviderEnabled(String provider) {}
+
+        public void onProviderDisabled(String provider) {}
+    };
+
+    void startLocation(){
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M&&
+                ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
+            requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},-1);
+        }else {
+            Log.d(MainActivity.class.getSimpleName(), "startLocation:");
+//if your a version below you use it therwise you get permission
+            LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+
+        }
+
+
+    }
+
+    private void makeUseOfNewLocation(Location location){
+        //TODO:
+    }
+    //LocationManager locatinoManager;
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        startLocation();
+
+
+
+       // LocationListener locationListener = new MyLocationListener();
+        //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 10, locationListener);
+
+
+
+// Define a listener that responds to location updates
+
+
+// Register the listener with the Location Manager to receive location updates
+
         shlist = new Shelter[11];
         shlist[0] = new Shelter("Family Supportive Housing", 37.366089,-121.867950, "692 N King Rd, San Jose, CA 95133","(408) 926-8885", 3.9);
         shlist[1] = new Shelter("LifeMoves | Montgomery Street Inn", 37.3367718, -121.9042078, "358 N Montgomery St, San Jose, CA 95110", "(408) 271-5160", 5);
@@ -34,10 +111,20 @@ public class MainActivity extends AppCompatActivity {
         shlist[9] = new Shelter("Next Door Solutions to Domestic", 37.363058, -121.904079, "234 E Gish Rd #200, San Jose, CA 95112", "(408) 501-7550", 4.8);
         shlist[10] = new Shelter("Cityteam Headquarters", 37.383549, -121.918972, "2304 Zanker Rd, San Jose, CA 95131", "(408) 232-5600", 3.7);
 
+        but = (Button)findViewById(R.id.IDmanButton);
+        but.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+               //doThing();
+                startLocation();
+
+
+            }
+
+        });
         tbox1 = (EditText) findViewById(R.id.IDlatitude);
-        tbox1.setText("12345");
+        //tbox1.setText("12345");
         tbox2 = (EditText) findViewById(R.id.IDlongtitude);
-        tbox2.setText("12345");
+        //tbox2.setText("12345");
         nameLoc = (TextView) findViewById(R.id.IDname);
         nameLoc.setText("fdfsfdsafads");
         address = (TextView) findViewById(R.id.IDadrress);
@@ -48,6 +135,25 @@ public class MainActivity extends AppCompatActivity {
         phone.setText("sadsa");
         rating = (TextView) findViewById(R.id.IDrating);
         rating.setText("sdsasad");
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        for(int i =0; i< permissions.length;i++){
+            if(grantResults[i] == PackageManager.PERMISSION_GRANTED){
+                startLocation();
+
+
+            }
+
+        }
+    }
+
+    void sayHI(){
+        nameLoc.setText("hIIIIIIIIIIIIIIIIII");
+
+
     }
 
     public void  doThing()
@@ -81,6 +187,7 @@ public class MainActivity extends AppCompatActivity {
         String showName = shlist[j].getName();
         nameLoc.setText(showName);
         String showDistance = Double.toString(mindistance) +" miles";
+       // String showDistance = Double.toString(mindistance) +" miles";
         dist.setText(showDistance);
         String showAddress = shlist[j].getAddress();
         address.setText(showAddress);
@@ -135,3 +242,5 @@ class Shelter {
     public void setRating (double rating) {this.rating = rating; }
 }
 
+
+// Register the listener with the Location Manager to receive location updates
