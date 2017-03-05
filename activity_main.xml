@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.example.lymanshen.emergencyshelter.MainActivity">
+    tools:context="com.example.tristen.hackathonapp.MainActivity">
 
     <TextView
         android:layout_width="wrap_content"
@@ -63,12 +63,12 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="numberDecimal"
+        android:inputType="numberSigned|numberDecimal"
         android:ems="10"
         android:id="@+id/IDlongtitude"
-        android:layout_alignTop="@+id/textView6"
         android:layout_alignParentEnd="true"
-        android:layout_alignBottom="@+id/textView6" />
+        android:layout_alignBottom="@+id/textView6"
+        android:layout_below="@+id/IDrating" />
 
     <TextView
         android:text="Latitude"
@@ -82,7 +82,7 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="numberDecimal"
+        android:inputType="numberSigned|numberDecimal"
         android:ems="10"
         android:id="@+id/IDlatitude"
         android:layout_alignTop="@+id/textView7"
@@ -93,7 +93,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/IDmanButton"
-        android:onClick="doThing"
+        android:onClick="sayHI"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true" />
 
