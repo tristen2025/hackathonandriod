@@ -1,14 +1,17 @@
-package com.example.lymanshen.emergencyshelter;
+package com.example.tristen.hackathonapp;
+//package com.example.lymanshen.emergencyshelter;
+        import android.os.Bundle;
+        import android.support.v7.app.AppCompatActivity;
+        import android.view.View;
+        import android.widget.EditText;
+        import android.widget.TextView;
+        import android.widget.Button;
 
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.widget.EditText;
-import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
 
-   // @Override
+    // @Override
     public Shelter shlist[];
     public EditText tbox1;
     public EditText tbox2;
@@ -17,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     public TextView  dist;
     public TextView phone;
     public TextView rating;
+    public Button but;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +38,15 @@ public class MainActivity extends AppCompatActivity {
         shlist[9] = new Shelter("Next Door Solutions to Domestic", 37.363058, -121.904079, "234 E Gish Rd #200, San Jose, CA 95112", "(408) 501-7550", 4.8);
         shlist[10] = new Shelter("Cityteam Headquarters", 37.383549, -121.918972, "2304 Zanker Rd, San Jose, CA 95131", "(408) 232-5600", 3.7);
 
+        but = (Button)findViewById(R.id.IDmanButton);
+        but.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+               doThing();
+
+
+            }
+
+        });
         tbox1 = (EditText) findViewById(R.id.IDlatitude);
         tbox1.setText("12345");
         tbox2 = (EditText) findViewById(R.id.IDlongtitude);
@@ -48,6 +61,11 @@ public class MainActivity extends AppCompatActivity {
         phone.setText("sadsa");
         rating = (TextView) findViewById(R.id.IDrating);
         rating.setText("sdsasad");
+    }
+    void sayHI(){
+        nameLoc.setText("hIIIIIIIIIIIIIIIIII");
+
+
     }
 
     public void  doThing()
@@ -81,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
         String showName = shlist[j].getName();
         nameLoc.setText(showName);
         String showDistance = Double.toString(mindistance) +" miles";
+       // String showDistance = Double.toString(mindistance) +" miles";
         dist.setText(showDistance);
         String showAddress = shlist[j].getAddress();
         address.setText(showAddress);
@@ -134,4 +153,3 @@ class Shelter {
     public void setPhone (String phone) {this.phone = phone; }
     public void setRating (double rating) {this.rating = rating; }
 }
-
