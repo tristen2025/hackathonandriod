@@ -14,8 +14,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.ToggleButton;
+
+import static com.example.lymanshen.emergencyshelter.R.id.toggleButton;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -31,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     public TextView phone;
     public TextView rating;
     public Button but;
+    public ToggleButton toggle;
     LocationListener locationListener = new LocationListener() {
         public void onLocationChanged(Location location) {
             // Called when a new location is found by the network location provider.
@@ -41,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
             tbox2.setText(Double.toString(location.getLongitude()));
             doThing();
 
-
         }
 
         public void onStatusChanged(String provider, int status, Bundle extras) {}
@@ -51,6 +55,9 @@ public class MainActivity extends AppCompatActivity {
         public void onProviderDisabled(String provider) {}
     };
 
+
+    LocationManager locationManager;
+
     void startLocation(){
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M&&
                 ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
@@ -58,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         }else {
             Log.d(MainActivity.class.getSimpleName(), "startLocation:");
 //if your a version below you use it therwise you get permission
-            LocationManager locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+            locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 
         }
@@ -104,27 +111,31 @@ public class MainActivity extends AppCompatActivity {
         but = (Button)findViewById(R.id.IDmanButton);
         but.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                //doThing();
-                startLocation();
-
-
+                doThing();
             }
 
         });
         tbox1 = (EditText) findViewById(R.id.IDlatitude);
-        //tbox1.setText("12345");
         tbox2 = (EditText) findViewById(R.id.IDlongtitude);
-        //tbox2.setText("12345");
         nameLoc = (TextView) findViewById(R.id.IDname);
-        nameLoc.setText("fdfsfdsafads");
         address = (TextView) findViewById(R.id.IDadrress);
-        address.setText("fsdfds");
         dist = (TextView) findViewById(R.id.IDdistance);
-        dist.setText("fdsfsd");
         phone = (TextView) findViewById(R.id.IDphone);
-        phone.setText("sadsa");
         rating = (TextView) findViewById(R.id.IDrating);
-        rating.setText("sdsasad");
+        toggle = (ToggleButton) findViewById(toggleButton);
+        toggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    startLocation();
+                } else {
+                    if(locationManager != null)
+                    {
+                        locationManager.removeUpdates(locationListener);
+                        locationManager = null;
+                    }
+                }
+            }
+        });
     }
 
     @Override
@@ -138,12 +149,6 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
-    }
-
-    void sayHI(){
-        nameLoc.setText("hIIIIIIIIIIIIIIIIII");
-
-
     }
 
     public void  doThing()
